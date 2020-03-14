@@ -1,5 +1,4 @@
 #include "treewasserstein.hpp"
-#include <iostream>
 
 bool isTree(const uint32_t num_node, EdgeList& edges, const uint32_t root_idx) {
   if (edges.size() != num_node - 1) return false;
