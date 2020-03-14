@@ -16,13 +16,11 @@ class TestTreeWasserstein(object):
       first_prob = first_prob / first_prob.sum()
       second_prob = np.random.rand(num_node)
       second_prob = second_prob / second_prob.sum()
-      twd = tw.tw(
-          first_prob=first_prob, second_prob=second_prob,
-          edges=edges)
+      twd = tw.tw(first_prob.tolist(), second_prob.tolist(), edges)
 
       adj_dict = dict(nx.all_pairs_shortest_path_length(G))
       metric = np.array([[adj_dict[i][j]
                           for i in range(num_node)] for j in range(num_node)])
       ans = ot.lp.emd2(first_prob, second_prob, metric)
 
-      assert np.allclose(twd, [ans]), f"TW : {twd}, WD : {ans}"
+      assert np.allclose([twd], [ans]), f"TW : {twd}, WD : {ans}"
