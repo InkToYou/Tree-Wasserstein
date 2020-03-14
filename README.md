@@ -3,10 +3,14 @@ Python module for fast calculation of the wasserstein distance on tree metrics i
 # Usage
 
 ## Build
-``` make build ```
+```
+make build
+```
 
 ## Test
-``` make test ```
+``` 
+make test
+```
 
 ## Example
 ``` 
@@ -22,7 +26,7 @@ See [here](examples/example.ipynb)
 
 
 # Reference
-- https://arxiv.org/abs/1005.1699 \
-- https://arxiv.org/abs/1902.00342 \
-- https://pot.readthedocs.io/en/stable/# \
+- https://arxiv.org/abs/1005.1699
+- https://arxiv.org/abs/1902.00342
+- https://pot.readthedocs.io/en/stable/#
 - https://networkx.github.io/
