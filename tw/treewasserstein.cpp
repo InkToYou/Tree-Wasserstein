@@ -124,7 +124,8 @@ double TreeMetric::TWDistance(const Prob& frist_prob, const Prob& second_prob) {
   return twd;
 }
 
-double tw(const Prob& first_prob, const Prob& second_prob, EdgeList& edges) {
+double distance(const Prob& first_prob, const Prob& second_prob,
+                EdgeList& edges) {
   uint32_t num_node = first_prob.size();
   TreeMetric tm(num_node, edges);
   return tm.TWDistance(first_prob, second_prob);

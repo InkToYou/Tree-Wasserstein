@@ -7,5 +7,5 @@
 
 PYBIND11_MODULE(tw, m) {
   m.doc() = "pybind11";
-  m.def("tw", &tw, "Tree Wasserstein");
+  m.def("distance", &distance, "Tree Wasserstein");
 }
