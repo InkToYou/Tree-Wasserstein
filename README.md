@@ -1,15 +1,24 @@
 # TreeWasserstein
-Python module for fast calculation of the wasserstein distance on tree metrics implemented by C++.
+A python module for fast calculation of the wasserstein distance on tree metrics implemented by C++.
+
+# Requirements
+`Python 3.7.3` + `pipenv` + `Clang 11.0.0`
+
 # Usage
+
+## Setup
+```
+pipenv install Pipfile
+```
 
 ## Build
 ```
-make build
+pipenv run make build
 ```
 
 ## Test
 ``` 
-make test
+pipenv run make test
 ```
 
 ## Example
