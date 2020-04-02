@@ -1,27 +1,27 @@
 # TreeWasserstein
 A python module for fast calculation of the wasserstein distance on tree metrics implemented by C++.
 
-# Requirements
+## Requirements
 `Python 3.7.3` + `pipenv` + `Clang 11.0.0`
 
-# Usage
+## Usage
 
-## Setup
+### Setup
 ```
 pipenv install Pipfile
 ```
 
-## Build
+### Build
 ```
 pipenv run make build
 ```
 
-## Test
+### Test
 ``` 
 pipenv run make test
 ```
 
-## Example
+### Example
 ``` 
 import tw
 first_prob = [0, 0, 1]
@@ -30,11 +30,11 @@ edges = [(0, 1, 1), (0, 2, 1)]
 tw.distance(first_prob, second_prob, edges) # 1.0
  ```
 
-## Performance
+### Performance
 See [here](examples/example.ipynb)
 
 
-# Reference
+## Reference
 - https://arxiv.org/abs/1005.1699
 - https://arxiv.org/abs/1902.00342
 - https://pot.readthedocs.io/en/stable/#
