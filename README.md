@@ -1,19 +1,11 @@
 # TreeWasserstein
-A python module for fast calculation of the wasserstein distance on tree metrics implemented by C++.
-
-## Prerequisites
-`Python 3.7.3` + `pipenv` + `Clang 11.0.0`
+A python module for fast calculation of the wasserstein distance on tree metrics implemented by C++. This package is based on `pybind11`.
 
 ## Usage
 
-### Setup
+### Install
 ```
-pipenv install Pipfile
-```
-
-### Build
-```
-pipenv run make build
+pip install ../Tree-Wasserstein
 ```
 
 ### Test
@@ -39,3 +31,5 @@ See [here](examples/example.ipynb)
 - Le, Tam, et al. "Tree-sliced variants of wasserstein distances." Advances in neural information processing systems. 2019.
 - Flamary, R., and N. Courty. "POT: Python Optimal Transport." (2017).
 - Aric A. Hagberg, Daniel A. Schult and Pieter J. Swart, “Exploring network structure, dynamics, and function using NetworkX”, in Proceedings of the 7th Python in Science Conference (SciPy2008), Gäel Varoquaux, Travis Vaught, and Jarrod Millman (Eds), (Pasadena, CA USA), pp. 11–15, Aug 2008
+- https://github.com/pybind/pybind11
+- https://github.com/pybind/python_example
