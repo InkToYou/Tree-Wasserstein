@@ -2,6 +2,7 @@
 
 #include <cinttypes>
 #include <cmath>
+#include <optional>
 #include <queue>
 #include <stdexcept>
 #include <tuple>
@@ -27,7 +28,7 @@ bool isTree(const uint32_t num_node, EdgeList& edges, const uint32_t root_idx) {
     tree[to].push_back(std::make_tuple(from, weight, i));
   }
 
-  // Judge whether that is a tree and Normalize it
+  // Judge if that is a tree and normalize it
   edges.clear();
   std::queue<uint32_t> que;
   que.push(root_idx);
@@ -56,13 +57,12 @@ int32_t sign(const double x) { return x >= 0 ? 1 : -1; };
 class Node {
  public:
   Node(const uint32_t idx, const bool is_root);
-  Node(Node&& node);
-  int32_t idx;
-  int32_t parent_idx;
+  uint32_t idx;
   bool is_root;
-  double parent_weight;
-  double first_prob;
-  double second_prob;
+  std::optional<uint32_t> parent_idx;
+  std::optional<double> parent_weight;
+  std::optional<double> first_prob;
+  std::optional<double> second_prob;
   double cumul_first_prob;
   double cumul_second_prob;
   double cumul_edge_weight;
@@ -73,27 +73,14 @@ using NodeList = std::vector<Node>;
 inline Node::Node(const uint32_t idx, const bool is_root)
     : idx(idx),
       is_root(is_root),
-      parent_idx(-1),
-      parent_weight(0),
-      first_prob(0),
-      second_prob(0),
+      parent_idx(std::nullopt),
+      parent_weight(std::nullopt),
+      first_prob(std::nullopt),
+      second_prob(std::nullopt),
       cumul_first_prob(0),
       cumul_second_prob(0),
       cumul_edge_weight(0),
       child_list({}){};
-
-inline Node::Node(Node&& node)
-    : idx(node.idx),
-      is_root(node.is_root),
-      parent_idx(node.parent_idx),
-      parent_weight(node.parent_weight),
-      first_prob(node.first_prob),
-      second_prob(node.second_prob),
-      cumul_first_prob(node.cumul_first_prob),
-      cumul_second_prob(node.cumul_second_prob),
-      cumul_edge_weight(node.cumul_edge_weight),
-      child_list({}){};
-
 class TreeMetric {
  public:
   TreeMetric(const uint32_t num_node, EdgeList& edges, const uint32_t root_idx);
@@ -130,7 +117,7 @@ TreeMetric::TreeMetric(const uint32_t num_node, EdgeList& edges,
   // Set children
   for (Node& n : this->nodes) {
     if (n.child_list.empty()) this->leaves.push_back(n.idx);
-    if (!n.parent_idx) this->root_idx = n.idx;
+    if (!n.parent_idx.has_value()) this->root_idx = n.idx;
   }
 }
 
@@ -147,7 +134,7 @@ void TreeMetric::accumulateNodeProb() {
       continue;
     }
 
-    Node& parent = this->nodes[node.parent_idx];
+    Node& parent = this->nodes[node.parent_idx.value()];
     parent.cumul_first_prob += node.cumul_first_prob;
     parent.cumul_second_prob += node.cumul_second_prob;
 
@@ -167,8 +154,8 @@ void TreeMetric::accumulateEdgeWeight() {
     for (uint32_t c : node.child_list) {
       Node& child = this->nodes[c];
       double prob_diff = child.cumul_first_prob - child.cumul_second_prob;
-      child.cumul_edge_weight =
-          node.cumul_edge_weight + sign(prob_diff) * child.parent_weight;
+      child.cumul_edge_weight = node.cumul_edge_weight +
+                                sign(prob_diff) * child.parent_weight.value();
       que.push(c);
     }
   }
@@ -189,7 +176,7 @@ double TreeMetric::TWDistance(const Prob& frist_prob, const Prob& second_prob) {
   setProb(frist_prob, second_prob);
   double twd = 0;
   for (Node& n : this->nodes)
-    twd += n.cumul_edge_weight * (n.first_prob - n.second_prob);
+    twd += n.cumul_edge_weight * (n.first_prob.value() - n.second_prob.value());
   return twd;
 }
 
