@@ -15,7 +15,7 @@ pytest = "==5.2.4"
 jupyter = "==1.0.0"
 networkx = "==2.3"
 POT = "==0.6.0"
-pybind11 = "==2.4.3"
+pybind11 = "==2.6.0"
 pipfile = "*"
 
 [requires]

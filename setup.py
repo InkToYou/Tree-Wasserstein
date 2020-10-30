@@ -1,85 +1,16 @@
-import os
-import sys
-import tempfile
-
-import setuptools
-from setuptools import Extension, setup
-from setuptools.command.build_ext import build_ext
-
-# This code is based on https://github.com/pybind/python_example/blob/master/setup.py
-
-
-def get_pybind_includepath():
-    import pybind11
-
-    return pybind11.get_include()
-
-
-def has_flag(compiler, flagname):
-    with tempfile.NamedTemporaryFile("w", suffix=".cpp", delete=False) as f:
-        f.write("int main (int argc, char **argv) { return 0; }")
-        fname = f.name
-    try:
-        compiler.compile([fname], extra_postargs=[flagname])
-    except setuptools.distutils.errors.CompileError:
-        return False
-    finally:
-        try:
-            os.remove(fname)
-        except OSError:
-            pass
-    return True
-
-
-def cpp_flag(compiler):
-    flag = "-std=c++17"
-    if has_flag(compiler, flag):
-        return flag
-
-    raise RuntimeError("Unsupported compiler")
-
+from pybind11 import get_include
+from pybind11.setup_helpers import Pybind11Extension, build_ext
+from setuptools import setup
 
 ext_modules = [
-    Extension(
+    Pybind11Extension(
         name="tw",
         sources=["tw/python_wrap.cpp"],
-        include_dirs=[get_pybind_includepath()],
+        include_dirs=[get_include()],
+        extra_compile_arges=["-std=c++17"],
         language="c++",
     ),
 ]
-
-
-class BuildExt(build_ext):
-    c_opts = {
-        "unix": [],
-    }
-    l_opts = {
-        "unix": [],
-    }
-
-    def build_extensions(self):
-
-        if sys.platform == "darwin":
-            if has_flag(self.compiler, "-stdlib=libc++"):
-                self.c_opts["unix"].append("-stdlib=libc++")
-                self.l_opts["unix"].append("-stdlib=libc++")
-
-        cplr_type = self.compiler.compiler_type
-        opts = self.c_opts.get(cplr_type, [])
-        link_opts = self.l_opts.get(cplr_type, [])
-
-        if cplr_type == "unix":
-            opts.append(cpp_flag(self.compiler))
-            if has_flag(self.compiler, "-fvisibility=hidden"):
-                opts.append("-fvisibility=hidden")
-
-        for ext in self.extensions:
-            ext.define_macros = [
-                ("VERSION_INFO", f'"{self.distribution.get_version()}"')
-            ]
-            ext.extra_compile_args = opts
-            ext.extra_link_args = link_opts
-        build_ext.build_extensions(self)
 
 
 setup(
@@ -88,7 +19,7 @@ setup(
     author="cojiro",
     description="A python module for fast calculation of the wasserstein distance on tree metrics implemented by C++.",
     ext_modules=ext_modules,
-    setup_requires=["pybind11>=2.4.3"],
-    cmdclass={"build_ext": BuildExt},
+    setup_requires=["pybind11>=2.6.0"],
+    cmdclass={"build_ext": build_ext},
     zip_safe=False,
 )
