@@ -1,7 +1,7 @@
-.PHONY: test
-
+.PHONY: install
 install:
-	pipenv run pip install ../Tree-Wasserstein
+	pipenv install Pipfile & pipenv run pip install ../Tree-Wasserstein
 
+.PHONY: test
 test:
 	pipenv run pytest .
