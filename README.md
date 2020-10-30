@@ -10,7 +10,7 @@ A python module for fast calculation of the wasserstein distance on tree metrics
 make install
 ```
 
-You can this module in the `pipenv` environment.
+You can use this module in the `pipenv` environment.
 
 ### Test
 
