@@ -1,8 +1,9 @@
 # TreeWasserstein
 
-A python module for fast calculation of the wasserstein distance on tree metrics implemented by C++. This package is based on `pybind11`.
+A python module for fast calculation of the wasserstein distance on tree metrics implemented in C++.
 
 ## Usage
+This package requires `pybind11 (>= 2.6.0)` and `pipenv`.
 
 ### Install
 
